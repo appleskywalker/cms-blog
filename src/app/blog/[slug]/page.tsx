@@ -14,10 +14,11 @@ import { getPost, listPosts, SITE_DOMAIN } from '@/lib/cms'
 
 export const revalidate = 60
 
-type Params = { slug: string }
+type Params = Promise<{ slug: string }>
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
-  const post = await getPost(params.slug)
+  const { slug } = await params
+  const post = await getPost(slug)
   if (!post) return { title: 'Not found' }
 
   const meta = (post.meta || {}) as Record<string, any>
@@ -50,7 +51,8 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
 }
 
 export default async function BlogPost({ params }: { params: Params }) {
-  const post = await getPost(params.slug)
+  const { slug } = await params
+  const post = await getPost(slug)
   if (!post) notFound()
 
   const date = post.published_at ? new Date(post.published_at) : null
