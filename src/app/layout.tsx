@@ -41,11 +41,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 }
 
 function Wordmark({ brand }: { brand: ReturnType<typeof getBranding> }) {
-  // Text-based brand wordmark in Playfair Display — no logo image file
-  // required per-site. First word gets flag red accent on hover to match
-  // the design language.
+  // SVG mark + Playfair Display wordmark. Mark is inlined from branding
+  // config (one per site), so there's no asset file to manage. The mark
+  // is small (36px), left-aligned with the text, and mirrors the house
+  // flag-red accent so it reads as one lockup, not two elements.
   return (
     <a href="/" className="flex items-center gap-3 group" aria-label={`${brand.shortName} home`}>
+      <span
+        className="w-9 h-9 flex-shrink-0 block group-hover:scale-105 transition-transform"
+        aria-hidden="true"
+        dangerouslySetInnerHTML={{ __html: brand.logoSvg }}
+      />
       <span className="font-display text-2xl text-white group-hover:text-flag transition leading-none">
         {brand.shortName}
       </span>
@@ -83,7 +89,14 @@ function Footer() {
       <div className="max-w-6xl mx-auto px-6">
         <div className="grid md:grid-cols-3 gap-10 mb-10">
           <div>
-            <div className="font-display text-2xl text-white mb-3">{brand.shortName}</div>
+            <div className="flex items-center gap-3 mb-3">
+              <span
+                className="w-9 h-9 flex-shrink-0 block"
+                aria-hidden="true"
+                dangerouslySetInnerHTML={{ __html: brand.logoSvg }}
+              />
+              <div className="font-display text-2xl text-white">{brand.shortName}</div>
+            </div>
             <p className="text-sm leading-relaxed">{brand.footerBlurb}</p>
           </div>
           <div>
