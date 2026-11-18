@@ -11,6 +11,9 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { getPost, listPosts, SITE_DOMAIN } from '@/lib/cms'
+import { getBranding } from '@/lib/branding'
+
+const brand = getBranding(SITE_DOMAIN)
 
 export const revalidate = 60
 
@@ -74,7 +77,7 @@ export default async function BlogPost({ params }: { params: Params }) {
     description: post.excerpt || undefined,
     image: post.featured_image || undefined,
     author: { '@type': 'Person', name: 'Angelo Mitlo', sameAs: [`https://${SITE_DOMAIN}`] },
-    publisher: { '@type': 'Organization', name: 'Aviation CRE', logo: { '@type': 'ImageObject', url: `https://${SITE_DOMAIN}/logo.png` } },
+    publisher: { '@type': 'Organization', name: brand.shortName, logo: { '@type': 'ImageObject', url: `https://${SITE_DOMAIN}/logo.png` } },
     datePublished: post.published_at || undefined,
     dateModified: post.updated_at,
     mainEntityOfPage: `https://${SITE_DOMAIN}/blog/${post.slug}`,
@@ -117,7 +120,7 @@ export default async function BlogPost({ params }: { params: Params }) {
             <p className="text-lg md:text-xl text-white/70 font-light leading-relaxed mb-8 italic">{post.excerpt}</p>
           )}
           <div className="flex flex-wrap items-center gap-x-6 gap-y-3 text-sm text-white/70 pt-6 border-t border-white/10">
-            <div><span className="text-white font-semibold">Angelo Mitlo</span><span className="text-white/50"> &middot; Aviation CRE &middot; TREC 842584 &middot; NJ 0894102</span></div>
+            <div><span className="text-white font-semibold">Angelo Mitlo</span><span className="text-white/50"> &middot; {brand.shortName} &middot; TREC 842584 &middot; NJ 0894102</span></div>
             {dateStr && <div className="text-white/50">{dateStr}</div>}
             <div className="text-white/50">~ {readMin} min read</div>
           </div>
@@ -132,7 +135,7 @@ export default async function BlogPost({ params }: { params: Params }) {
         <section className="py-20 bg-white border-t border-ink/5">
           <div className="max-w-5xl mx-auto px-6">
             <div className="text-flag text-xs uppercase tracking-[0.2em] font-semibold mb-3">Keep reading</div>
-            <h2 className="font-display text-3xl md:text-4xl mb-10 text-ink">Related from the Aviation CRE blog</h2>
+            <h2 className="font-display text-3xl md:text-4xl mb-10 text-ink">Related from the {brand.shortName} blog</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {siblings.map(s => (
                 <a key={s.id} href={`/blog/${s.slug}`} className="group block p-7 border border-ink/10 hover:border-flag rounded transition">

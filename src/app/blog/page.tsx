@@ -3,12 +3,15 @@
 
 import type { Metadata } from 'next'
 import { listPosts, SITE_DOMAIN } from '@/lib/cms'
+import { getBranding } from '@/lib/branding'
+
+const brand = getBranding(SITE_DOMAIN)
 
 export const revalidate = 60
 
 export const metadata: Metadata = {
-  title: 'Aviation CRE Blog | Part 145, Hangars, FBOs, and Airports',
-  description: 'Hangar leases, Part 145 compliance, FBO sales, and ground-lease vs fee simple analysis. By a dual-licensed CRE broker across NJ and TX.',
+  title: `${brand.fullName} — Blog`,
+  description: brand.blogDesc,
   alternates: { canonical: `https://${SITE_DOMAIN}/blog` },
 }
 
@@ -29,14 +32,14 @@ export default async function BlogIndex() {
         <div className="max-w-4xl mx-auto px-6 pt-8">
           <div className="inline-flex items-center gap-x-6 mb-6 px-3 py-1 border border-flag/60 rounded-full text-flag text-xs uppercase tracking-[0.2em] font-semibold">
             <span className="w-1.5 h-1.5 rounded-full bg-flag"></span>
-            Aviation CRE Blog
+            {brand.heroEyebrow}
           </div>
           <h1 className="font-display text-4xl md:text-6xl leading-[1.08] font-semibold mb-6">
-            Hangars, Part 145, FBOs,<br />
-            <span className="text-flag">by someone who&rsquo;s been there.</span>
+            {brand.heroLine1}<br />
+            <span className="text-flag">{brand.heroLine2}</span>
           </h1>
           <p className="text-lg md:text-xl text-white/70 font-light leading-relaxed">
-            Written by Angelo Mitlo &mdash; Aviation CRE broker, NJ #0894102 &middot; TX #842584.
+            {brand.heroByline}
           </p>
         </div>
       </section>
